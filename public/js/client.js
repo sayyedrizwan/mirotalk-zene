@@ -4472,6 +4472,7 @@ function manageButtons() {
     // setToggleExtraButtons();
     setAudioBtn();
     setVideoBtn();
+    
     setSwapCameraBtn();
     // setHideMeButton();
     // setMyHandBtn();
