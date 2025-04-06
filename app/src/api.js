@@ -53,10 +53,11 @@ module.exports = class ServerApi {
 
     getJoinURL(data) {
         // Get data
-        const { room, name, audio, video, screen, notify, hide, token } = data;
+        const { room, name, audio, video, screen, notify, hide, token, avatar } = data;
 
         const roomValue = room || uuidV4();
         const nameValue = name || 'User-' + this.getRandomNumber();
+        const avatarValue = avatar || `https://ui-avatars.com/api/?name=${String(name).replaceAll(" ", "+")}&background=2F3C7E&color=fff&size=128&length=2`;
         const audioValue = audio || false;
         const videoValue = video || false;
         const screenValue = screen || false;
@@ -70,6 +71,7 @@ module.exports = class ServerApi {
             '/join?' +
             `room=${roomValue}` +
             `&name=${encodeURIComponent(nameValue)}` +
+            `&avatar=${avatarValue}` +
             `&audio=${audioValue}` +
             `&video=${videoValue}` +
             `&screen=${screenValue}` +

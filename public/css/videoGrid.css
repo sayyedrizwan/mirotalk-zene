@@ -139,6 +139,8 @@
     left: 50%;
     transform: translate(-50%, -50%);
     transition: box-shadow 0.2s ease;
+    object-fit: cover;
+    object-position: center;
 }
 
 /*--------------------------------------------------------------

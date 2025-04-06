@@ -575,8 +575,9 @@ app.get('/join/', async (req, res) => {
             https://p2p.mirotalk.com/join?room=test&name=mirotalk&audio=1&video=1&screen=0&notify=0&hide=0
             https://mirotalk.up.railway.app/join?room=test&name=mirotalk&audio=1&video=1&screen=0&notify=0&hide=0
         */
-        const { room, name, audio, video, screen, notify, hide, token } = checkXSS(req.query);
+        const { room, name, audio, video, screen, notify, hide, token, avatar } = checkXSS(req.query);
 
+        console.log(avatar)
         if (!room) {
             log.warn('/join/params room empty', room);
             return res.status(401).json({ message: 'Direct Room Join: Missing mandatory room parameter!' });
@@ -1206,6 +1207,7 @@ io.sockets.on('connect', async (socket) => {
             channel_password,
             peer_uuid,
             peer_name,
+            peer_avatar,
             peer_token,
             peer_video,
             peer_audio,
@@ -1314,6 +1316,7 @@ io.sockets.on('connect', async (socket) => {
             peer_name: peer_name,
             peer_presenter: isPresenter,
             peer_video: peer_video,
+            peer_avatar: peer_avatar,
             peer_audio: peer_audio,
             peer_video_status: peer_video_status,
             peer_audio_status: peer_audio_status,
@@ -1506,14 +1509,18 @@ io.sockets.on('connect', async (socket) => {
         // Prevent XSS injection
         const config = checkXSS(cfg);
         // log.debug('Peer status', config);
-        const { room_id, peer_name, peer_id, element, status } = config;
+        console.log(config)
+        const { room_id, peer_name, peer_id, element, status, avatar } = config;
 
         const data = {
             peer_id: peer_id,
             peer_name: peer_name,
             element: element,
             status: status,
+            avatar: avatar,
         };
+
+        console.log(avatar)
 
         try {
             for (let peer_id in peers[room_id]) {

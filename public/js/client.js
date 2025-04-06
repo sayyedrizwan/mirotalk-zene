@@ -535,6 +535,7 @@ let isToggleExtraBtnClicked = false;
 let myPeerId; // This socket.id
 let myPeerUUID = getUUID(); // Unique peer id
 let myPeerName = getPeerName();
+let myPeerAvatar = getAvatarURL();
 let myToken = getPeerToken(); // peer JWT
 let isPresenter = false; // True Who init the room (aka first peer joined)
 let myHandStatus = false;
@@ -1035,6 +1036,17 @@ function getPeerName() {
     }
     console.log('Direct join', { name: name });
     return name;
+}
+
+/**
+ * Check if peer avatar is set
+ * @returns {string} Peer Name
+ */
+function getAvatarURL() {
+    const qs = new URLSearchParams(window.location.search);
+    const avatar = filterXSS(qs.get('avatar'));
+
+    return avatar;
 }
 
 /**
@@ -1940,8 +1952,8 @@ function checkPeerAudioVideo() {
  */
 async function whoAreYouJoin() {
     myVideoParagraph.innerText = myPeerName + ' (me)';
-    setPeerAvatarImgName('myVideoAvatarImage', myPeerName);
-    setPeerAvatarImgName('myProfileAvatar', myPeerName);
+    setPeerAvatarImgName('myVideoAvatarImage', myPeerAvatar);
+    setPeerAvatarImgName('myProfileAvatar', myPeerAvatar);
     setPeerChatAvatarImgName('right', myPeerName);
     joinToChannel();
     handleHideMe(isHideMeActive);
@@ -3291,6 +3303,7 @@ async function loadRemoteMediaStream(stream, peers, peer_id, kind) {
     console.log('REMOTE PEER INFO', peers[peer_id]);
 
     const peer_name = peers[peer_id]['peer_name'];
+    const peer_avatar = peers[peer_id]['peer_avatar'];
     const peer_audio = peers[peer_id]['peer_audio'];
     const peer_video = peers[peer_id]['peer_video'];
     const peer_video_status = peers[peer_id]['peer_video_status'];
@@ -3436,6 +3449,7 @@ async function loadRemoteMediaStream(stream, peers, peer_id, kind) {
             }
 
             // my video avatar image
+
             remoteVideoAvatarImage.setAttribute('id', peer_id + '_avatar');
             remoteVideoAvatarImage.className = 'videoAvatarImage'; // pulsate
 
@@ -3562,7 +3576,7 @@ async function loadRemoteMediaStream(stream, peers, peer_id, kind) {
             peer_privacy_status && setVideoPrivacyStatus(remoteMedia.id, peer_privacy_status);
 
             // refresh remote peers avatar name
-            setPeerAvatarImgName(remoteVideoAvatarImage.id, peer_name);
+            setPeerAvatarImgName(remoteVideoAvatarImage.id, peer_avatar);
             // refresh remote peers hand icon status and title
             setPeerHandStatus(peer_id, peer_name, peer_hand_status);
             // refresh remote peers video icon status and title
@@ -3788,16 +3802,16 @@ function genAvatarSvg(peerName, avatarImgSize) {
  * @param {string} videoAvatarImageId element id
  * @param {string} peerName
  */
-function setPeerAvatarImgName(videoAvatarImageId, peerName) {
+function setPeerAvatarImgName(videoAvatarImageId, peerAvatar) {
     const videoAvatarImageElement = getId(videoAvatarImageId);
     videoAvatarImageElement.style.pointerEvents = 'none';
-    if (useAvatarSvg) {
-        const avatarImgSize = isMobileDevice ? 128 : 256;
-        const avatarImgSvg = isValidEmail(peerName) ? genGravatar(peerName) : genAvatarSvg(peerName, avatarImgSize);
-        videoAvatarImageElement.setAttribute('src', avatarImgSvg);
-    } else {
-        videoAvatarImageElement.setAttribute('src', images.avatar);
-    }
+    // if (useAvatarSvg) {
+    //     const avatarImgSize = isMobileDevice ? 128 : 256;
+    //     const avatarImgSvg = isValidEmail(peerName) ? genGravatar(peerName) : genAvatarSvg(peerName, avatarImgSize);
+    //     videoAvatarImageElement.setAttribute('src', avatarImgSvg);
+    // } else {
+    videoAvatarImageElement.setAttribute('src', peerAvatar);
+    // }
 }
 
 /**
@@ -8741,8 +8755,8 @@ async function updateMyPeerName() {
 
     window.localStorage.peer_name = myPeerName;
 
-    setPeerAvatarImgName('myVideoAvatarImage', myPeerName);
-    setPeerAvatarImgName('myProfileAvatar', myPeerName);
+    setPeerAvatarImgName('myVideoAvatarImage', myPeerAvatar);
+    setPeerAvatarImgName('myProfileAvatar', myPeerAvatar);
     setPeerChatAvatarImgName('right', myPeerName);
     userLog('toast', 'My name changed to ' + myPeerName);
 }
@@ -8752,7 +8766,7 @@ async function updateMyPeerName() {
  * @param {object} config data
  */
 function handlePeerName(config) {
-    const { peer_id, peer_name } = config;
+    const { peer_id, peer_name, peer_avatar } = config;
     const videoName = getId(peer_id + '_name');
     if (videoName) videoName.innerText = peer_name;
     // change also avatar and btn value - name on chat lists....
@@ -8763,7 +8777,7 @@ function handlePeerName(config) {
         msgerPeerAvatar.src = isValidEmail(peer_name) ? genGravatar(peer_name) : genAvatarSvg(peer_name, 32);
     }
     // refresh also peer video avatar name
-    setPeerAvatarImgName(peer_id + '_avatar', peer_name);
+    setPeerAvatarImgName(peer_id + '_avatar', peer_avatar);
 }
 
 /**
@@ -8847,7 +8861,7 @@ function setMyAudioStatus(status) {
  * @param {boolean} status of my video
  */
 function setMyVideoStatus(status) {
-    window.parent.postMessage({ type: "video-status", status: status }, "*");
+    window.parent.postMessage({ type: "audio-status", status: status }, "*");
     console.log('My video status', status);
 
     // On video OFF display my video avatar name
