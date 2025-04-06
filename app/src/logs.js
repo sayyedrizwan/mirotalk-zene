@@ -104,7 +104,8 @@ module.exports = class Logs {
      * @returns {string} date to Local String
      */
     getDateTime() {
-        const currentTime = new Date().toLocaleString('en-US', this.tzOptions);
+        // const currentTime = new Date().toLocaleString('en-US', this.tzOptions);
+        const currentTime = new Date().toLocaleString('en-US');
         const milliseconds = String(new Date().getMilliseconds()).padStart(3, '0');
         return colors.cyan(`${currentTime}:${milliseconds}`);
     }
