@@ -1353,7 +1353,7 @@ function handleButtonsRule() {
     elemDisplay(hideMeBtn, buttons.main.showHideMeBtn);
     elemDisplay(audioBtn, buttons.main.showAudioBtn);
     elemDisplay(videoBtn, buttons.main.showVideoBtn);
-    //elemDisplay(screenShareBtn, buttons.main.showScreenBtn, ); // auto-detected
+    elemDisplay(screenShareBtn, buttons.main.showScreenBtn, ); // auto-detected
     elemDisplay(recordStreamBtn, buttons.main.showRecordStreamBtn);
     elemDisplay(recImage, buttons.main.showRecordStreamBtn);
     elemDisplay(chatRoomBtn, buttons.main.showChatRoomBtn);
@@ -1980,7 +1980,8 @@ async function joinToChannel() {
  * @param {object} config data
  */
 async function handleAddPeer(config) {
-    //console.log("addPeer", JSON.stringify(config));
+    console.log("addPeer", JSON.stringify(config));
+    window.parent.postMessage({ type: "user-joined" }, "*");
 
     const { peer_id, should_create_offer, iceServers, peers } = config;
 
@@ -2473,6 +2474,10 @@ function handleRemovePeer(config) {
 
     playSound('removePeer');
 
+    const count = Object.keys(allPeers).length;
+    if(count <= 1) {
+        window.parent.postMessage({ type: "no-users" }, "*");
+    }
     console.log('ALL PEERS', allPeers);
 }
 
@@ -4456,7 +4461,7 @@ function manageButtons() {
     // Buttons bar
     // setShareRoomBtn();
     // setRecordStreamBtn();
-    // setScreenShareBtn();
+    setScreenShareBtn();
     // setFullScreenBtn();
     // setChatRoomBtn();
     // setCaptionRoomBtn();
@@ -4470,13 +4475,13 @@ function manageButtons() {
     // setAboutBtn();
     // Buttons bottom
     // setToggleExtraButtons();
+
     setAudioBtn();
     setVideoBtn();
-    
     setSwapCameraBtn();
     // setHideMeButton();
     // setMyHandBtn();
-    // setLeaveRoomBtn();
+    setLeaveRoomBtn();
 }
 
 /**
@@ -4539,7 +4544,11 @@ function toggleExtraButtons() {
     const cName = isButtonsBarHidden ? className.up : className.down;
 
     elemDisplay(buttonsBar, isButtonsBarHidden, displayValue);
-    toggleExtraBtn.className = cName;
+    try {
+        toggleExtraBtn.className = cName;   
+    } catch (error) {
+        
+    }
 }
 
 /**
@@ -6255,7 +6264,11 @@ function showButtonsBarAndMenu() {
         return;
     toggleClassElements('navbar', 'block');
     //elemDisplay(buttonsBar, true, 'flex');
-    toggleExtraBtn.className = className.down;
+    try {
+        toggleExtraBtn.className = className.down;   
+    } catch (error) {
+        
+    }
     elemDisplay(bottomButtons, true, 'flex');
     isButtonsVisible = true;
 }
@@ -6266,14 +6279,22 @@ function showButtonsBarAndMenu() {
 function checkButtonsBarAndMenu() {
     if (lsSettings.keep_buttons_visible) {
         toggleClassElements('navbar', 'block');
-        toggleExtraBtn.className = className.up;
+        try {
+            toggleExtraBtn.className = className.up;        
+        } catch (error) {
+            
+        }
         elemDisplay(buttonsBar, true, 'flex');
         elemDisplay(bottomButtons, true, 'flex');
         isButtonsVisible = true;
     } else {
         if (!isButtonsBarOver) {
             toggleClassElements('navbar', 'none');
-            toggleExtraBtn.className = className.up;
+            try {
+                toggleExtraBtn.className = className.up;        
+            } catch (error) {
+                
+            }
             elemDisplay(buttonsBar, false);
             elemDisplay(bottomButtons, false);
             isButtonsVisible = false;
@@ -8809,6 +8830,7 @@ function setMyHandStatus() {
  * @param {boolean} status of my audio
  */
 function setMyAudioStatus(status) {
+    window.parent.postMessage({ type: "audio-status", status: status }, "*");
     console.log('My audio status', status);
     const audioClassName = status ? className.audioOn : className.audioOff;
     audioBtn.className = audioClassName;
@@ -8825,6 +8847,7 @@ function setMyAudioStatus(status) {
  * @param {boolean} status of my video
  */
 function setMyVideoStatus(status) {
+    window.parent.postMessage({ type: "video-status", status: status }, "*");
     console.log('My video status', status);
 
     // On video OFF display my video avatar name
@@ -11157,11 +11180,13 @@ function showAbout() {
  */
 function leaveRoom() {
     checkRecording();
-    if (surveyActive) {
-        leaveFeedback();
-    } else {
-        redirectOnLeave();
-    }
+    redirectOnLeave();
+
+    // if (surveyActive) {
+    //     leaveFeedback();
+    // } else {
+    //     redirectOnLeave();
+    // }
 }
 
 /**

@@ -292,6 +292,10 @@ body {
 # Bottom buttons
 --------------------------------------------------------------*/
 
+.navbar.fadein {
+    display: none !important;
+}
+
 #bottomButtons {
     z-index: 10;
     display: none;
