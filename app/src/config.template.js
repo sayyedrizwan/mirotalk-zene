@@ -87,23 +87,23 @@ module.exports = {
      */
     buttons: {
         main: {
-            showShareQr: true,
-            showShareRoomBtn: true, // For guests
-            showHideMeBtn: true,
-            showAudioBtn: true,
-            showVideoBtn: true,
-            showScreenBtn: true, // autodetected
-            showRecordStreamBtn: true,
-            showChatRoomBtn: true,
-            showCaptionRoomBtn: true,
-            showRoomEmojiPickerBtn: true,
-            showMyHandBtn: true,
-            showWhiteboardBtn: true,
-            showSnapshotRoomBtn: true,
-            showFileShareBtn: true,
-            showDocumentPipBtn: true,
-            showMySettingsBtn: true,
-            showAboutBtn: true, // Please keep me always true, Thank you!
+            showShareQr: false,
+            showShareRoomBtn: false, // For guests
+            showHideMeBtn: false,
+            showAudioBtn: false,
+            showVideoBtn: false,
+            showScreenBtn: false, // autodetected
+            showRecordStreamBtn: false,
+            showChatRoomBtn: false,
+            showCaptionRoomBtn: false,
+            showRoomEmojiPickerBtn: false,
+            showMyHandBtn: false,
+            showWhiteboardBtn: false,
+            showSnapshotRoomBtn: false,
+            showFileShareBtn: false,
+            showDocumentPipBtn: false,
+            showMySettingsBtn: false,
+            showAboutBtn: false, // Please keep me always true, Thank you!
         },
         chat: {
             showTogglePinBtn: true,

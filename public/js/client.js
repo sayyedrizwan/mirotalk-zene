@@ -4454,29 +4454,28 @@ function refreshMyAudioStatus(localAudioMediaStream) {
  */
 function manageButtons() {
     // Buttons bar
-    setShareRoomBtn();
-    setRecordStreamBtn();
-    setScreenShareBtn();
-    setFullScreenBtn();
-    setChatRoomBtn();
-    setCaptionRoomBtn();
-    setRoomEmojiButton();
-    setChatEmojiBtn();
-    setMyWhiteboardBtn();
-    setSnapshotRoomBtn();
-    setMyFileShareBtn();
-    setDocumentPiPBtn();
-    setMySettingsBtn();
-    setAboutBtn();
-
+    // setShareRoomBtn();
+    // setRecordStreamBtn();
+    // setScreenShareBtn();
+    // setFullScreenBtn();
+    // setChatRoomBtn();
+    // setCaptionRoomBtn();
+    // setRoomEmojiButton();
+    // setChatEmojiBtn();
+    // setMyWhiteboardBtn();
+    // setSnapshotRoomBtn();
+    // setMyFileShareBtn();
+    // setDocumentPiPBtn();
+    // setMySettingsBtn();
+    // setAboutBtn();
     // Buttons bottom
-    setToggleExtraButtons();
+    // setToggleExtraButtons();
     setAudioBtn();
     setVideoBtn();
     setSwapCameraBtn();
-    setHideMeButton();
-    setMyHandBtn();
-    setLeaveRoomBtn();
+    // setHideMeButton();
+    // setMyHandBtn();
+    // setLeaveRoomBtn();
 }
 
 /**
@@ -5476,24 +5475,44 @@ function setLeaveRoomBtn() {
  * Handle left buttons - status menù show - hide on body mouse move
  */
 function handleBodyOnMouseMove() {
-    document.body.addEventListener('mousemove', (e) => {
-        showButtonsBarAndMenu();
-    });
-
+    try {
+        document.body.addEventListener('mousemove', (e) => {
+            showButtonsBarAndMenu();
+        });
+    } catch (error) {
+        error;
+    }
     // detect buttons bar over
-    buttonsBar.addEventListener('mouseover', () => {
-        isButtonsBarOver = true;
-    });
-    buttonsBar.addEventListener('mouseout', () => {
-        isButtonsBarOver = false;
-    });
+    try {
+        buttonsBar.addEventListener('mouseover', () => {
+            isButtonsBarOver = true;
+        });
+    } catch (error) {
+        error;
+    }
 
-    bottomButtons.addEventListener('mouseover', () => {
-        isButtonsBarOver = true;
-    });
-    bottomButtons.addEventListener('mouseout', () => {
-        isButtonsBarOver = false;
-    });
+    try {
+        buttonsBar.addEventListener('mouseout', () => {
+            isButtonsBarOver = false;
+        });
+    } catch (error) {
+        error;
+    }
+
+    try {
+        bottomButtons.addEventListener('mouseover', () => {
+            isButtonsBarOver = true;
+        });
+    } catch (error) {
+        error;
+    }
+    try {
+        bottomButtons.addEventListener('mouseout', () => {
+            isButtonsBarOver = false;
+        });
+    } catch (error) {
+        error;
+    }
 
     checkButtonsBarAndMenu();
 }
@@ -8749,11 +8768,15 @@ function handleHideMe(isHideMeActive) {
         if (isVideoPinned) myVideoPinBtn.click();
         elemDisplay(myVideoWrap, false);
         setColor(hideMeBtn, 'red');
-        hideMeBtn.className = className.hideMeOn;
+        try {
+            hideMeBtn.className = className.hideMeOn;
+        } catch (error) {}
         playSound('off');
     } else {
         elemDisplay(myVideoWrap, true, 'inline-block');
-        hideMeBtn.className = className.hideMeOff;
+        try {
+            hideMeBtn.className = className.hideMeOff;
+        } catch (error) {}
         setColor(hideMeBtn, 'var(--btn-bar-bg-color)');
         playSound('on');
     }
@@ -9709,7 +9732,9 @@ function whiteboardIsEraser(status) {
  * @param {string} color to set
  */
 function setColor(elem, color) {
-    elem.style.color = color;
+    try {
+        elem.style.color = color;
+    } catch (error) {}
 }
 
 /**
@@ -11625,7 +11650,11 @@ function getName(name) {
  * @param {boolean} yes true/false
  */
 function elemDisplay(element, display, mode = 'inline') {
-    element.style.display = display ? mode : 'none';
+    try {
+        element.style.display = display ? mode : 'none';
+    } catch (error) {
+        error;
+    }
 }
 
 /**
