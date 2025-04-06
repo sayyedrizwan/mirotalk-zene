@@ -4480,7 +4480,7 @@ function manageButtons() {
     // Buttons bar
     // setShareRoomBtn();
     // setRecordStreamBtn();
-    setScreenShareBtn();
+    // setScreenShareBtn();
     // setFullScreenBtn();
     // setChatRoomBtn();
     // setCaptionRoomBtn();

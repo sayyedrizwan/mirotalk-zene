@@ -320,7 +320,7 @@ body {
 }
 
 #bottomButtons button {
-    width: 50px;
+    width: 150px;
     padding: 10px;
     font-size: 1.6rem;
     color: var(--btn-bar-bg-color);
