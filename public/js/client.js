@@ -1445,6 +1445,7 @@ async function whoAreYou() {
         elemDisplay(loadingDiv, false);
 
         myPeerName = filterXSS(myPeerName);
+        myPeerAvatar = filterXSS(myPeerAvatar);
 
         console.log(`11.1 Check if ${myPeerName} exist in the room`, roomId);
 
@@ -1505,7 +1506,7 @@ async function whoAreYou() {
         allowOutsideClick: false,
         allowEscapeKey: false,
         background: swBg,
-        title: brand.app?.name || 'MiroTalk P2P',
+        title: brand.app?.name || 'Zene P2P',
         position: 'center',
         input: 'text',
         inputPlaceholder: 'Enter your email or name',
@@ -1969,6 +1970,7 @@ async function joinToChannel() {
         channel: roomId,
         channel_password: thisRoomPassword,
         peer_info: peerInfo,
+        peer_avatar: myPeerAvatar,
         peer_uuid: myPeerUUID,
         peer_name: myPeerName,
         peer_token: myToken,
@@ -2062,6 +2064,7 @@ async function handlePeersConnectionStatus(peer_id) {
         const connectionStatus = event.currentTarget.connectionState;
         const signalingState = event.currentTarget.signalingState;
         const peerName = allPeers[peer_id]['peer_name'];
+
         console.log('[RTCPeerConnection] - CONNECTION', {
             peer_id: peer_id,
             peer_name: peerName,
@@ -3758,6 +3761,7 @@ function isValidEmail(email) {
  * @param {integer} avatarImgSize width and height in px
  */
 function genAvatarSvg(peerName, avatarImgSize) {
+    console.log("Avatar Img Size: " + avatarImgSize)
     const charCodeRed = peerName.charCodeAt(0);
     const charCodeGreen = peerName.charCodeAt(1) || charCodeRed;
     const red = Math.pow(charCodeRed, 7) % 200;
@@ -3803,6 +3807,7 @@ function genAvatarSvg(peerName, avatarImgSize) {
  * @param {string} peerName
  */
 function setPeerAvatarImgName(videoAvatarImageId, peerAvatar) {
+    console.log("runned" + peerAvatar)
     const videoAvatarImageElement = getId(videoAvatarImageId);
     videoAvatarImageElement.style.pointerEvents = 'none';
     // if (useAvatarSvg) {
@@ -10632,6 +10637,7 @@ function sendFileInformations(file, peer_id, broadcast = false) {
             room_id: roomId,
             broadcast: broadcast,
             peer_name: myPeerName,
+            peer_avatar: myPeerAvatar,
             peer_id: peer_id,
             file: {
                 fileName: fileToSend.name,

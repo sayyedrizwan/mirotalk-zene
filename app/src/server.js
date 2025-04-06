@@ -1118,7 +1118,7 @@ io.sockets.on('connect', async (socket) => {
 
         log.debug('Socket Promise', data);
         //...
-        const { room_id, peer_id, peer_name, method, params } = data;
+        const { room_id, peer_id, peer_name, peer_avatar, method, params } = data;
 
         switch (method) {
             case 'checkPeerName':
@@ -1292,6 +1292,7 @@ io.sockets.on('connect', async (socket) => {
         const presenter = {
             peer_ip: peer_ip,
             peer_name: peer_name,
+            peer_avatar: peer_avatar,
             peer_uuid: peer_uuid,
             is_presenter: is_presenter,
         };
@@ -1306,7 +1307,7 @@ io.sockets.on('connect', async (socket) => {
         }
 
         // Check if peer is presenter, if token check the presenter key
-        const isPresenter = peer_token ? is_presenter : isPeerPresenter(channel, socket.id, peer_name, peer_uuid);
+        const isPresenter = peer_token ? is_presenter : isPeerPresenter(channel, socket.id, peer_name, peer_avatar, peer_uuid);
 
         // Some peer info data
         const { osName, osVersion, browserName, browserVersion } = peer_info;
@@ -1365,6 +1366,7 @@ io.sockets.on('connect', async (socket) => {
             nodemailer.sendEmailAlert('join', {
                 room_id: channel,
                 peer_name: peer_name,
+                peer_avatar: peer_avatar,
                 domain: socket.handshake.headers.host.split(':')[0],
                 os: osName ? `${osName} ${osVersion}` : '',
                 browser: browserName ? `${browserName} ${browserVersion}` : '',
@@ -1459,6 +1461,7 @@ io.sockets.on('connect', async (socket) => {
     /**
      * Relay NAME to peers
      */
+    
     socket.on('peerName', async (cfg) => {
         // Prevent XSS injection
         const config = checkXSS(cfg);
@@ -1510,17 +1513,17 @@ io.sockets.on('connect', async (socket) => {
         const config = checkXSS(cfg);
         // log.debug('Peer status', config);
         console.log(config)
-        const { room_id, peer_name, peer_id, element, status, avatar } = config;
+        const { room_id, peer_name, peer_id, element, status, peer_avatar } = config;
 
         const data = {
             peer_id: peer_id,
             peer_name: peer_name,
+            peer_avatar: peer_avatar,
             element: element,
             status: status,
-            avatar: avatar,
         };
 
-        console.log(avatar)
+        console.log(peer_avatar)
 
         try {
             for (let peer_id in peers[room_id]) {
@@ -1745,6 +1748,7 @@ io.sockets.on('connect', async (socket) => {
                 should_create_offer: false,
                 iceServers: iceServers,
             });
+
             // offer true
             socket.emit('addPeer', {
                 peer_id: id,
@@ -1760,6 +1764,7 @@ io.sockets.on('connect', async (socket) => {
      * Remove peers from channel
      * @param {string} channel room id
      */
+
     async function removePeerFrom(channel) {
         if (!(channel in socket.channels)) {
             return log.debug('[' + socket.id + '] [Warning] not in ', channel);

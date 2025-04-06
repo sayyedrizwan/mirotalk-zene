@@ -222,6 +222,8 @@ definitions:
         properties:
             peer_name:
                 type: string
+            peer_avatar:
+                type: string
             peer_presenter:
                 type: boolean
             peer_video:
