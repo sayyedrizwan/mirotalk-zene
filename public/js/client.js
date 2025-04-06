@@ -3807,7 +3807,6 @@ function genAvatarSvg(peerName, avatarImgSize) {
  * @param {string} peerName
  */
 function setPeerAvatarImgName(videoAvatarImageId, peerAvatar) {
-    console.log("runned" + peerAvatar)
     const videoAvatarImageElement = getId(videoAvatarImageId);
     videoAvatarImageElement.style.pointerEvents = 'none';
     // if (useAvatarSvg) {
