@@ -85,4 +85,8 @@ class IframeApi {
     appendIframeToParentNode(iframe) {
         this.options.parentNode.appendChild(iframe);
     }
+
+    enableDisableVideo() {
+        document.getElementById('videoBtn').click();
+    }
 }

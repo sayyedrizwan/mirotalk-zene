@@ -296,6 +296,10 @@ body {
     display: none !important;
 }
 
+.bottomButtonsViews {
+    display: none !important;
+}
+
 #bottomButtons {
     z-index: 10;
     display: none;

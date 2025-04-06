@@ -148,6 +148,7 @@ access to use this app.
         <!-- End left buttons -->
 
         <!-- Start bottom buttons -->
+         <div class="bottomButtonsViews">
         <div id="bottomButtons" class="fadein">
             <!-- <button id="toggleExtraBtn" class="fas fa-chevron-down"></button> -->
             <button id="audioBtn" class="fas fa-microphone"></button>
@@ -159,6 +160,8 @@ access to use this app.
             <!-- <button id="mySettingsBtn" class="fas fa-cogs"></button> -->
             <button id="leaveRoomBtn" class="fa-solid fa-phone-slash"></button>
         </div>
+        </div>
+        
 
         <!-- End bottom buttons -->
 
@@ -1150,6 +1153,17 @@ access to use this app.
         - https://www.npmjs.com/package/axios                               (https://github.com/axios/axios)
         - https://highlightjs.org/                                          (https://github.com/highlightjs/highlight.js)
         -->
+
+        <script>
+            setTimeout(() => {
+                window.addEventListener('message', (event) => {
+                    alert('cfvgbh');
+                    if (event.data.type === 'enable-disable-video') {
+                        document.getElementById('videoBtn').click();
+                    }
+                });
+            }, 1000);
+        </script>
         <script defer src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/xss/dist/xss.min.js"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
