@@ -11239,7 +11239,7 @@ function leaveFeedback() {
 }
 
 function redirectOnLeave() {
-    window.parent.postMessage({ type: "no-users" }, "*");
+    window.parent.postMessage({ type: "end-call" }, "*");
     redirectActive ? openURL(redirectURL) : openURL('/newcall');
 }
 
